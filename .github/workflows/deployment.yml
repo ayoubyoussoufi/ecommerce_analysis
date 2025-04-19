@@ -13,19 +13,35 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Create Docker network
+        run: docker network create dbt-network
+
       - name: Start PostgreSQL
         run: |
-          docker run --name test-postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=Blend2022* -e POSTGRES_DB=my_project_db -p 5432:5432 -d postgres:12
-          sleep 10  # Wait for DB to be ready
+          docker run --name test-postgres \
+            --network dbt-network \
+            -e POSTGRES_USER=postgres \
+            -e POSTGRES_PASSWORD=Blend2022* \
+            -e POSTGRES_DB=my_project_db \
+            -d postgres:12
+          sleep 10
 
-      - name: Run dbt in container
-        env:
-          DBT_PROFILES_DIR: ${{ github.workspace }}
+      - name: dbt deps
         run: |
           docker run --rm \
-            --network host \
+            --network dbt-network \
             -v ${{ github.workspace }}:/usr/app \
             -w /usr/app \
             -e DBT_PROFILES_DIR=/usr/app \
             ghcr.io/dbt-labs/dbt-postgres:1.9.0 \
-            bash -c "dbt deps && dbt build --target dev"
+            dbt deps
+
+      - name: dbt build
+        run: |
+          docker run --rm \
+            --network dbt-network \
+            -v ${{ github.workspace }}:/usr/app \
+            -w /usr/app \
+            -e DBT_PROFILES_DIR=/usr/app \
+            ghcr.io/dbt-labs/dbt-postgres:1.9.0 \
+            dbt build --target dev
