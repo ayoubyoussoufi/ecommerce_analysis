@@ -19,5 +19,5 @@ jobs:
           dbt deps
       - name: Run dbt build
         env:
-          DBT_PROFILES_DIR: ./
+          DBT_PROFILES_DIR: ./.github
         run: dbt build --target dev
