@@ -9,7 +9,7 @@ on:
 jobs:
   dbt-build:
     runs-on: ubuntu-latest
-    container: ghcr.io/dbt-labs/dbt-postgres:1.7.0
+    container: ghcr.io/dbt-labs/dbt-postgres:1.9.2
 
     steps:
       - name: Checkout repository
