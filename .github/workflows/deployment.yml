@@ -8,9 +8,10 @@ on:
 
 jobs:
   dbt-build:
+    runs-on: ubuntu-latest  # This was missing
     container: ghcr.io/dbt-labs/dbt-postgres:1.9.0
     env:
-      DBT_PROFILES_DIR: ./.github  # Primary location to check
+      DBT_PROFILES_DIR: ./.github
 
     steps:
       - uses: actions/checkout@v4
