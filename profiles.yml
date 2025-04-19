@@ -3,7 +3,7 @@ my_duckdb_project:
   outputs:
     dev:
       type: postgres
-      host: "127.0.0.1"  
+      host: 127.0.0.1  
       user: "postgres"
       password: "Blend2022*"
       port: 5432  
