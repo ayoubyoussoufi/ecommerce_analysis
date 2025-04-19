@@ -8,38 +8,16 @@ on:
 
 jobs:
   dbt-build:
-    runs-on: ubuntu-latest  # This was missing
+    runs-on: ubuntu-latest
     container: ghcr.io/dbt-labs/dbt-postgres:1.9.0
-    env:
-      DBT_PROFILES_DIR: ./.github
-
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Verify files
-        run: |
-          ls -la
-          ls -la .github/
-          cat .github/profiles.yml
-
-      - name: Create profiles dir (fallback)
-        run: |
-          mkdir -p ~/.dbt
-          cp .github/profiles.yml ~/.dbt/
-          dbt debug --profiles-dir ~/.dbt
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Install dependencies
         run: |
           dbt deps
-
       - name: Run dbt build
-        run: |
-          dbt debug --profiles-dir ./.github || dbt debug --profiles-dir ~/.dbt
-          dbt build --target dev --profiles-dir ./.github || dbt build --target dev --profiles-dir ~/.dbt
-
-      - name: Upload artifacts
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: dbt-target
-          path: target/
+        env:
+          DBT_PROFILES_DIR: ./
+        run: dbt build --target dev
