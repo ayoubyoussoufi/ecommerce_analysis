@@ -1,0 +1,13 @@
+sources:
+  - name: src_postgres
+    schema: public
+    database: my_project_db
+    tables:
+      - name: customer_order
+      - name: customers
+      - name: geolocation
+      - name: order_items
+      - name: orders
+      - name: payments
+      - name: products
+      - name: sellers

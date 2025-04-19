@@ -32,12 +32,29 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   my_duckdb_project:
     # Config indicated by + and applies to all files under models/example/
-    example:
-      my_first_dbt_model:
-        +materialized: view
-      customer_order:
+    staging:
+      stg_customers:
         +materialized: table
-      freight_costs:
-        +materialized: view
-      highest_pay:
-        +materialized: view
+        +schema: staging
+      stg_orders:
+        +materialized: table
+        +schema: staging
+      stg_customer_orders:
+        +materialized: table
+        +schema: staging
+      stg_order_items:
+        +materialized: table
+        +schema: staging
+    intermediate:
+      int_my_first_dbt_model:
+        +materialized: table
+        +schema: inter
+      int_customer_order:
+        +materialized: table
+        +schema: inter
+      int_freight_costs:
+        +materialized: table
+        +schema: inter
+      int_highest_pay:
+        +materialized: table
+        +schema: inter

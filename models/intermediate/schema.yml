@@ -1,0 +1,74 @@
+
+version: 2
+
+models:
+  - name: int_my_first_dbt_model
+    description: "A starter dbt model"
+    columns:
+      - name: customer_id
+        description: "The primary key for this table"
+        data_tests:
+          - unique
+          - not_null
+  - name: int_customer_order
+    description: "Aggregated customer order metrics with delivery performance indicators"
+    columns:
+      - name: customer_id
+        description: "Primary key identifier for the customer"
+        tests:
+          - not_null
+          - unique
+          
+      - name: customer_unique_id
+        description: "Unique identifier for the customer (from source system)"
+        tests:
+          - not_null
+          
+      - name: customer_city
+        description: "Formatted city name (proper case)"
+        tests:
+          - not_null
+          
+      - name: customer_state
+        description: "Uppercase state abbreviation"
+        tests:
+          - not_null
+          
+      - name: order_count
+        description: "Total number of orders placed by this customer"
+      - name: first_order_date
+        description: "Date of the customer's first order"
+      - name: most_recent_order_date
+        description: "Date of the customer's most recent order"
+          
+      - name: delivered_order_count
+        description: "Count of successfully delivered orders"
+        tests:
+          - accepted_values:
+              values: [0, 1, 2, 3, 4, 5]
+              quote: false
+              
+      - name: avg_delivery_days
+        description: "Average days between order and delivery"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1000
+  - name: int_highest_pay
+    description: "payment_ranking"
+    columns:
+      - name: payment_value
+        description: "value of the payment by the customer_id"
+        tests:
+        - positive_values
+  - name: int_freight_costs
+    description: ""
+    columns:
+      - name: customer_id
+        description: "customer ids"
+        data_type: integer
+      - name: freight_per_customer
+        description: "the freight per costumer"
+        
+      
+    
