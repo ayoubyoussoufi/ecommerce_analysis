@@ -30,6 +30,7 @@ jobs:
         run: |
           docker run --rm \
             --network dbt-network \
+            --entrypoint "" \
             -v ${{ github.workspace }}:/usr/app \
             -w /usr/app \
             -e DBT_PROFILES_DIR=/usr/app \
@@ -40,6 +41,7 @@ jobs:
         run: |
           docker run --rm \
             --network dbt-network \
+            --entrypoint "" \
             -v ${{ github.workspace }}:/usr/app \
             -w /usr/app \
             -e DBT_PROFILES_DIR=/usr/app \
