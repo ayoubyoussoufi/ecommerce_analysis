@@ -3,9 +3,9 @@ my_duckdb_project:
   outputs:
     dev:
       type: postgres
-      host: 127.0.0.1
+      host: test-postgres
       user: "postgres"
-      password: "Blend2022*"
+      password: "dbtproject2020*"
       port: 5432  
       dbname: my_project_db
       schema: "public"
