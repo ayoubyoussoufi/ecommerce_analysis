@@ -1,6 +1,6 @@
 sources:
   - name: src_postgres
-    schema: analytics
+    schema: public
     database: my_project_db
     tables:
       - name: customer_order
