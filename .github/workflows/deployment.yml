@@ -36,6 +36,16 @@ jobs:
             -e DBT_PROFILES_DIR=/usr/app \
             ghcr.io/dbt-labs/dbt-postgres:1.9.0 \
             dbt deps
+      - name: Run dbt seed
+        run: |
+          docker run --rm \
+            --network dbt-network \
+            --entrypoint "" \
+            -v ${{ github.workspace }}:/usr/app \
+            -w /usr/app \
+            -e DBT_PROFILES_DIR=/usr/app \
+            ghcr.io/dbt-labs/dbt-postgres:1.9.0 \
+            dbt seeds
 
       - name: dbt build
         run: |
