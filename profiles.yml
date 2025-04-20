@@ -8,4 +8,4 @@ my_duckdb_project:
       password: "Blend2022*"
       port: 5432  
       dbname: my_project_db
-      schema: "analytics"
+      schema: "public"
