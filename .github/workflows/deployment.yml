@@ -7,10 +7,12 @@ on:
     branches: [ "master" ]
 
 jobs:
-  setup-postgres:
-    name: Setup Postgres
+  dbt-build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Create Docker network
         run: docker network create dbt-network
 
@@ -23,15 +25,6 @@ jobs:
             -e POSTGRES_DB=my_project_db \
             -d postgres:12
           sleep 10
-
-  dbt-deps:
-    name: Install dbt dependencies
-    runs-on: ubuntu-latest
-    needs: setup-postgres
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: dbt deps
         run: |
           docker run --rm \
@@ -42,15 +35,6 @@ jobs:
             -e DBT_PROFILES_DIR=/usr/app \
             ghcr.io/dbt-labs/dbt-postgres:1.9.0 \
             dbt deps
-
-  dbt-seed:
-    name: Seed DB
-    runs-on: ubuntu-latest
-    needs: dbt-deps
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: Run dbt seed
         run: |
           docker run --rm \
@@ -61,15 +45,6 @@ jobs:
             -e DBT_PROFILES_DIR=/usr/app \
             ghcr.io/dbt-labs/dbt-postgres:1.9.0 \
             dbt seed --target dev
-
-  dbt-build:
-    name: Build staging and intermediate models
-    runs-on: ubuntu-latest
-    needs: dbt-seed
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: dbt build
         run: |
           docker run --rm \
