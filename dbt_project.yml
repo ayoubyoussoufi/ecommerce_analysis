@@ -46,9 +46,6 @@ models:
         +materialized: table
         +schema: staging
     intermediate:
-      int_my_first_dbt_model:
-        +materialized: table
-        +schema: inter
       int_customer_order:
         +materialized: table
         +schema: inter

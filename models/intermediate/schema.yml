@@ -2,14 +2,6 @@
 version: 2
 
 models:
-  - name: int_my_first_dbt_model
-    description: "A starter dbt model"
-    columns:
-      - name: customer_id
-        description: "The primary key for this table"
-        data_tests:
-          - unique
-          - not_null
   - name: int_customer_order
     description: "Aggregated customer order metrics with delivery performance indicators"
     columns:
@@ -69,6 +61,6 @@ models:
         data_type: integer
       - name: freight_per_customer
         description: "the freight per costumer"
-        
+
       
     
