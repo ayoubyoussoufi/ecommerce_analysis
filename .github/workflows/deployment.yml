@@ -45,7 +45,7 @@ jobs:
             -w /usr/app \
             -e DBT_PROFILES_DIR=/usr/app \
             ghcr.io/dbt-labs/dbt-postgres:1.9.0 \
-            dbt seeds
+            dbt seed --target dev
 
       - name: dbt build
         run: |
