@@ -21,7 +21,7 @@ jobs:
           docker run --name test-postgres \
             --network dbt-network \
             -e POSTGRES_USER=postgres \
-            -e POSTGRES_PASSWORD=Blend2022* \
+            -e POSTGRES_PASSWORD=dbtproject2020* \
             -e POSTGRES_DB=my_project_db \
             -d postgres:12
           sleep 10
