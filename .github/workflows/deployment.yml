@@ -2,56 +2,51 @@ name: dbt CI Pipeline
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
 
 jobs:
   dbt-build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create Docker network
-        run: docker network create dbt-network
-
-      - name: Start PostgreSQL
+      - name: Authenticate to GCP
         run: |
-          docker run --name test-postgres \
-            --network dbt-network \
-            -e POSTGRES_USER=postgres \
-            -e POSTGRES_PASSWORD=dbtproject2020* \
-            -e POSTGRES_DB=my_project_db \
-            -d postgres:12
-          sleep 10
+          echo '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}' > /tmp/key.json
+
       - name: dbt deps
         run: |
           docker run --rm \
-            --network dbt-network \
-            --entrypoint "" \
             -v ${{ github.workspace }}:/usr/app \
             -w /usr/app \
             -e DBT_PROFILES_DIR=/usr/app \
-            ghcr.io/dbt-labs/dbt-postgres:1.9.0 \
-            dbt deps
-      - name: Run dbt seed
+            -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/key.json \
+            -v /tmp/key.json:/tmp/key.json \
+            ghcr.io/dbt-labs/dbt-bigquery:1.9.0 \
+            deps
+
+      - name: dbt seed
         run: |
           docker run --rm \
-            --network dbt-network \
-            --entrypoint "" \
             -v ${{ github.workspace }}:/usr/app \
             -w /usr/app \
             -e DBT_PROFILES_DIR=/usr/app \
-            ghcr.io/dbt-labs/dbt-postgres:1.9.0 \
-            dbt seed --target dev
+            -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/key.json \
+            -v /tmp/key.json:/tmp/key.json \
+            ghcr.io/dbt-labs/dbt-bigquery:1.9.0 \
+            seed --target dev
+
       - name: dbt build
         run: |
           docker run --rm \
-            --network dbt-network \
-            --entrypoint "" \
             -v ${{ github.workspace }}:/usr/app \
             -w /usr/app \
             -e DBT_PROFILES_DIR=/usr/app \
-            ghcr.io/dbt-labs/dbt-postgres:1.9.0 \
-            dbt build --target dev --select staging intermediate --exclude seed
+            -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/key.json \
+            -v /tmp/key.json:/tmp/key.json \
+            ghcr.io/dbt-labs/dbt-bigquery:1.9.0 \
+            build --target dev --select staging intermediate --exclude seed
