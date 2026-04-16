@@ -1,6 +1,7 @@
+{{ config(materialized='table') }}
 with source as (
 
-    select * from {{ source('src_postgres', 'orders') }}
+    select * from {{ source('e_commerce_1', 'orders') }}
 
 ),
 

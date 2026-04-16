@@ -1,0 +1,68 @@
+version: 2
+
+models:
+  - name: fct_order_items_enriched
+    description: >
+      Enriched fact table at order item grain combining order items, customers, and products.
+      Includes derived metrics for logistics efficiency and profitability proxy analysis.
+
+    columns:
+
+      - name: order_id
+        description: Unique identifier for the order.
+        tests:
+          - not_null
+
+      - name: order_item_id
+        description: Line item identifier within an order.
+        tests:
+          - not_null
+
+      - name: product_id
+        description: Identifier of the product purchased.
+        tests:
+          - not_null
+
+      - name: customer_id
+        description: Identifier of the customer placing the order.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('customers')
+              field: customer_id
+
+      - name: order_purchase_timestamp
+        description: Timestamp when the order was placed.
+
+      - name: price
+        description: Product price at time of purchase.
+
+      - name: freight_value
+        description: Shipping cost associated with the item.
+
+      - name: item_total_value
+        description: Total item value including price and freight (price + freight_value).
+
+      - name: customer_city
+        description: City of the customer.
+
+      - name: customer_state
+        description: State of the customer.
+
+      - name: product_category
+        description: Product category in English (mapped from category translation table).
+
+      - name: product_weight_kg
+        description: Product weight in kilograms.
+
+      - name: product_volume_cm3
+        description: Product volume in cubic centimeters.
+
+      - name: freight_to_price_ratio
+        description: Ratio of freight cost to product price (freight_value / price).
+
+      - name: freight_per_kg
+        description: Freight cost normalized by product weight (freight_value / product_weight_kg).
+
+      - name: profit_proxy_simple
+        description: Simplified profitability (price - freight_value).

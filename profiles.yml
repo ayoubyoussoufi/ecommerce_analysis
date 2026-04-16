@@ -1,11 +1,10 @@
-my_duckdb_project:
+my_bigquery_project:
   target: dev
   outputs:
     dev:
-      type: postgres
-      host: test-postgres
-      user: "postgres"
-      password: "dbtproject2020*"
-      port: 5432  
-      dbname: my_project_db
-      schema: "public"
+      type: bigquery
+      method: oauth
+      project: converteo-ae-recrut-yayoub
+      dataset: ecommerce
+      threads: 4
+      location: EU

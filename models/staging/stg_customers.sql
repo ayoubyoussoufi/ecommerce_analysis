@@ -5,7 +5,7 @@
 }}
 
 WITH source AS (
-    SELECT * FROM {{ source('src_postgres', 'customers') }}
+    SELECT * FROM {{ source('e_commerce_1', 'customers') }}
 ),
 
 renamed AS (
