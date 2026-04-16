@@ -16,7 +16,7 @@ jobs:
 
       - name: Authenticate to GCP
         run: |
-          echo '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}' > /tmp/key.json
+          echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" > /tmp/key.json
 
       - name: dbt deps
         run: |
