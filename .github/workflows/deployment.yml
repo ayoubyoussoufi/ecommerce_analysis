@@ -18,7 +18,6 @@ jobs:
         run: |
           echo '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}' > /tmp/key.json
 
-      # 📦 Install dependencies
       - name: dbt deps
         run: |
           docker run --rm \
@@ -28,7 +27,7 @@ jobs:
             -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/key.json \
             -v /tmp/key.json:/tmp/key.json \
             ghcr.io/dbt-labs/dbt-bigquery:1.9.0 \
-            dbt deps
+            deps
 
       - name: dbt seed
         run: |
