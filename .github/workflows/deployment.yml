@@ -38,7 +38,7 @@ jobs:
             -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/key.json \
             -v /tmp/key.json:/tmp/key.json \
             ghcr.io/dbt-labs/dbt-bigquery:1.9.0 \
-            dbt seed --target dev
+            seed --target ci
 
       - name: dbt build
         run: |
@@ -49,4 +49,4 @@ jobs:
             -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/key.json \
             -v /tmp/key.json:/tmp/key.json \
             ghcr.io/dbt-labs/dbt-bigquery:1.9.0 \
-            dbt build --target dev --select staging intermediate --exclude seed
+            build --target ci --select staging intermediate --exclude seed
