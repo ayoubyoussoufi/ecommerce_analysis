@@ -8,3 +8,4 @@ my_bigquery_project:
       dataset: ecommerce
       threads: 4
       location: EU
+      keyfile: /tmp/key.json
